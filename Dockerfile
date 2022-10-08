@@ -18,9 +18,11 @@ RUN apt update -y \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     && apt update -y \
     && apt install -y fonts-wqy-zenhei fonts-wqy-microhei \
-    && apt install -y xdg-utils wget xz-utils python chromium-browser \
+    && apt install -y libegl1 libopengl0 xdg-utils wget xz-utils python3 chromium-browser \
     && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin
 ENV LANG en_US.utf8
+COPY --from=builder /go/release/static /
+COPY --from=builder /go/release/views /
 COPY --from=builder /go/release/bookstack /
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 EXPOSE 8181
