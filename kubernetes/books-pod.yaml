@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-stack
+  namespace: books
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: books-stack # 通过这里和下面的标签建立关系
+  template:
+    metadata:
+      labels:
+        run: books-stack  # 被选择
+    spec:
+      containers:
+        - name: books-stack
+          image: redis:6.2.6 # 直接拉取指定版本的redis镜像
+          volumeMounts: # 下面定义了两个挂载
+            - mountPath: /conf
+              name: config
+      volumes:
+        - name: config
+          configMap: # 类型是configmap
+            name: configmap # 名称是之前创建的configmap的名称
+            items:
+              - key: app.conf # 这个key是上面configmap中data下定义的key值
+                path: app.conf # 这个是容器内部关联的文件名称

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: books-svc
+  namespace: books
+spec:
+  ports:
+    - port: 8181
+      name: books-svc
+      targetPort: 8181
+  selector:
+    app: books-stack

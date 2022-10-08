@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: books-ingress
+  namespace: books
+  annotations:
+    nginx.ingress.kubernetes.io/limit-connections: "20" # 来自单个IP地址的并发连接数
+    nginx.ingress.kubernetes.io/limit-rps: "20" # 每秒可从给定IP接受的连接数
+    nginx.ingress.kubernetes.io/limit-rpm: "600" # 每分钟可从给定IP接受的连接数
+#    nginx.ingress.kubernetes.io/server-snippet: |
+#      if ($uri ~* "/api/.*") {
+#          rewrite ^/api/(.*) /api/v1/$1 break;
+#      }
+#      if ($uri ~* "/images/.*") {
+#          rewrite ^/api/(.*) /images/$1 break;
+#      }
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  tls:
+    - hosts:
+        - books.kanter.cn
+#      secretName: books-tls
+  rules:
+    - host: books.kanter.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: admin-app-svc
+                port:
+                  number: 8181
