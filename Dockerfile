@@ -25,5 +25,6 @@ COPY --from=builder /go/release/static /
 COPY --from=builder /go/release/views /
 COPY --from=builder /go/release/bookstack /
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN ./bookstack install
 EXPOSE 8181
 CMD ["./bookstack"]

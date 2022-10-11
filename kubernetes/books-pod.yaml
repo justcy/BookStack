@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: books-stack
-          image: redis:6.2.6 # 直接拉取指定版本的redis镜像
+          image: justcy/books:latest # 直接拉取指定版本的redis镜像
           volumeMounts: # 下面定义了两个挂载
             - mountPath: /conf
               name: config
