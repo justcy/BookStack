@@ -21,10 +21,11 @@ RUN apt update -y \
     && apt install -y libegl1 libopengl0 xdg-utils wget xz-utils python3 chromium-browser \
     && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin
 ENV LANG en_US.utf8
-COPY --from=builder /go/release/static /
-COPY --from=builder /go/release/views /
-COPY --from=builder /go/release/bookstack /
+#COPY --from=builder /go/release/conf /
+COPY --from=builder /go/release/static /static
+COPY --from=builder /go/release/views /views
+COPY --from=builder /go/release/bookstack /bookstack
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN ./bookstack install
+#RUN ./bookstack install
 EXPOSE 8181
 CMD ["./bookstack"]

@@ -256,7 +256,7 @@ func ResolveCommand(args []string) {
 	fonts := filepath.Join("static", "fonts")
 
 	if !utils.FileExists(fonts) {
-		log.Fatal("Font path not exist.")
+		log.Fatal("Font path not exist."+fonts)
 	}
 	gocaptcha.ReadFonts(filepath.Join("static", "fonts"), ".ttf")
 

@@ -1,8 +1,8 @@
 package daemon
 
 import (
-	"fmt"
 	"os"
+	"sync"
 
 	"github.com/TruthHun/BookStack/models"
 
@@ -11,7 +11,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/kardianos/service"
 )
-
+var loadOnce sync.Once
 type Daemon struct {
 	config *service.Config
 	errs   chan error
@@ -36,7 +36,9 @@ func (d *Daemon) Config() *service.Config {
 	return d.config
 }
 func (d *Daemon) Start(s service.Service) error {
-
+	loadOnce.Do(func() {
+		Install()
+	})
 	go d.Run()
 	return nil
 }
@@ -62,9 +64,9 @@ func (d *Daemon) Stop(s service.Service) error {
 }
 
 func Install() {
-	fmt.Println(os.Args, "---", os.Args[3:])
+	//fmt.Println(os.Args, "---", os.Args[3:])
 	d := NewDaemon()
-	d.config.Arguments = os.Args[3:]
+	d.config.Arguments = nil
 
 	s, err := service.New(d, d.config)
 
@@ -78,9 +80,10 @@ func Install() {
 		os.Exit(1)
 	} else {
 		beego.Info("Service installed!")
+		return
 	}
 
-	os.Exit(0)
+	//os.Exit(0)
 }
 
 //func Install() {
