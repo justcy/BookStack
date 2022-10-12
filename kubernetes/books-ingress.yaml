@@ -28,6 +28,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: admin-app-svc
+                name: books-svc
                 port:
                   number: 8181
